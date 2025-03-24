@@ -45,10 +45,15 @@ const login = (req, res) => {
             // 디비 비밀번호랑 비교
             if (loginUser && loginUser.password == hashPassword) {
                 const token = jwt.sign({
+                    id: loginUser.id,
                     email: loginUser.email
                 }, process.env.PRIVATE_KEY, {
-                    expiresIn: '5m',
+                    expiresIn: '1m',
                     issuer: 'sonjiwoo'
+                });
+
+                res.cookie("token", token, {
+                    httpOnly: true
                 });
                 console.log(token);
                 return res.status(StatusCodes.OK).json(results);
