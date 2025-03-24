@@ -22,7 +22,12 @@ const join = (req, res) => {
                 console.log(err);
                 return res.status(StatusCodes.BAD_REQUEST).end();
             }
-            res.status(StatusCodes.CREATED).json(results);
+            if(results.affectedRows){
+                return res.status(StatusCodes.CREATED).json(results);
+            }else{
+                res.status(StatusCodes.CREATED).json(results);
+            }
+
         })
 
 };
@@ -48,7 +53,7 @@ const login = (req, res) => {
                     id: loginUser.id,
                     email: loginUser.email
                 }, process.env.PRIVATE_KEY, {
-                    expiresIn: '1m',
+                    expiresIn: '5m',
                     issuer: 'sonjiwoo'
                 });
 
